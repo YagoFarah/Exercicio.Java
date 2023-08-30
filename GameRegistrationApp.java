@@ -1,10 +1,9 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +105,8 @@ public class GameRegistrationApp extends JFrame {
         add(outputPanel, BorderLayout.SOUTH);
 
         gamesJList.setModel(gamesListModel);
-        gamesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Apenas uma seleção
+        gamesJList.setCellRenderer(new GameListRenderer());
+        gamesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gamesJList.addListSelectionListener(new GameListSelectionListener());
         outputPanel.add(new JScrollPane(gamesJList), BorderLayout.WEST);
 
@@ -179,6 +179,16 @@ public class GameRegistrationApp extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(GameRegistrationApp.this, "Selecione um jogo para excluir.");
             }
+        }
+    }
+
+    private class GameListRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent(
+                JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            Game game = (Game) value;
+            label.setText(game.title);
+            return label;
         }
     }
 
